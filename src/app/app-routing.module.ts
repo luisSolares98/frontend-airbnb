@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { ListChatComponent } from './chat/list-chat/list-chat.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,9 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
-  }
+  },
+  { path: 'chat', component: ListChatComponent },
+  { path: 'chat/:uuid', component: ListChatComponent },
 ];
 
 @NgModule({

@@ -1,0 +1,41 @@
+
+
+<div class="container mt-5" *ngIf="dataJson">
+    <div class="row">
+        <!-- Lista de chats -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Chats
+                </div>
+                <ul class="list-group list-group-flush" id="chat-list">
+                    <ul class="list-group">
+                        <li *ngFor="let data of dataJson" class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="/chat/{{data.uuid}}">{{ data.name }}</a>
+                        </li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Panel de conversación -->
+        <div class="col-md-8" *ngIf="messagesJson">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    Conversación
+                </div>
+                <div class="card-body" id="message-list">
+                    <div class="card-body" id="message-list">
+                        <div *ngFor="let message of messagesJson" class="d-flex justify-content-start'" [ngClass]="{'d-flex justify-content-end': message.userId === uuid}"><p class="bg-primary px-4 py-2 rounded text-white">{{message.message}}</p></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <textarea class="form-control" placeholder="Escribe un mensaje" id="message-input"></textarea>
+                        <button class="btn btn-success" type="button" onclick="sendMessage()">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
