@@ -6,6 +6,10 @@ import { ListChatComponent } from './chat/list-chat/list-chat.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: LoginComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
