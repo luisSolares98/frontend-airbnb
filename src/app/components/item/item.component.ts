@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Property } from 'src/app/models/property';
 
 @Component({
   selector: 'app-item',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent {
+  @Input()
+  property?: Property ;
+
+  constructor() {
+  }
 
 }
