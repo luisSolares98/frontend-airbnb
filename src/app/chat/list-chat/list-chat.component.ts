@@ -21,8 +21,9 @@ export class ListChatComponent implements OnInit {
       this.getMessagesDigitalOceans();
     }
     this.messageForm = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      mensaje: ['', Validators.required]
+      message: ['', Validators.required],
+      userId: ['b04b168e-922c-40f1-8f31-1833f493d1f9', Validators.required],
+      chatId: [this.uuid, Validators.required],
     });
   }
   getMessagesDigitalOceans() {
@@ -41,5 +42,23 @@ export class ListChatComponent implements OnInit {
     this.httpClient.get('http://147.182.253.73:4000/chats').subscribe((data: any) => {
       this.dataJson = data;
     });
+  }
+
+  sendMessage() {
+    if (this.messageForm.valid) {
+      const dataForm = this.messageForm.value;
+      console.log(dataForm);
+      const url = 'http://147.182.253.73:4000/message/create';
+
+      this.httpClient.post(url, dataForm).subscribe(
+        (response) => {
+          this.getMessagesDigitalOceans();
+          console.log('Respuesta del servidor:', response);
+        },
+        (error) => {
+          console.error('Error al enviar datos:', error);
+        }
+      );
+    }
   }
 }

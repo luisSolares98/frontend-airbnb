@@ -26,14 +26,23 @@
                 </div>
                 <div class="card-body" id="message-list">
                     <div class="card-body" id="message-list">
-                        <div *ngFor="let message of messagesJson" class="d-flex justify-content-start'" [ngClass]="{'d-flex justify-content-end': message.userId === uuid}"><p class="bg-primary px-4 py-2 rounded text-white">{{message.message}}</p></div>
+                        <div *ngFor="let message of messagesJson">
+                            <div *ngIf="message.userId === 'b04b168e-922c-40f1-8f31-1833f493d1f9'; else msgReceipt">
+                                <div class="d-flex justify-content-start"><p class="bg-light px-4 py-2 rounded text-dark">{{message.message}}</p></div>
+                              </div>
+                            <ng-template #msgReceipt>
+                                <div class="d-flex justify-content-end"><p class="bg-primary px-4 py-2 rounded text-white">{{message.message}}</p></div>
+                            </ng-template>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class="input-group">
-                        <textarea class="form-control" placeholder="Escribe un mensaje" id="message-input"></textarea>
-                        <button class="btn btn-success" type="button" onclick="sendMessage()">Enviar</button>
-                    </div>
+                    <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="message" placeholder="Escribe un mensaje" id="message-input"></textarea>
+                            <button class="btn btn-success" type="submit">Enviar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
