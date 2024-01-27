@@ -13,6 +13,7 @@ export class ListChatComponent implements OnInit {
   dataJson: any;
   uuid: string = '';
   messagesJson: any;
+  loading: boolean = true;
 
 
   constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute) {
@@ -29,8 +30,8 @@ export class ListChatComponent implements OnInit {
   getMessagesDigitalOceans() {
     this.httpClient.get(`http://147.182.253.73:4000/message/${this.uuid}`)
       .subscribe((data: any) => {
-        console.log(data);
         this.messagesJson = data;
+        console.log(this.messagesJson)
       });
   }
 
@@ -41,6 +42,7 @@ export class ListChatComponent implements OnInit {
   getChatsDigitalOceans() {
     this.httpClient.get('http://147.182.253.73:4000/chats').subscribe((data: any) => {
       this.dataJson = data;
+      this.loading = false;
     });
   }
 
