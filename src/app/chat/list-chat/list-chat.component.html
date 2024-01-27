@@ -31,7 +31,7 @@
             <div class="card-body" id="message-list">
               <div *ngFor="let message of messagesJson">
                 <div
-                  *ngIf="message.userId === 'b04b168e-922c-40f1-8f31-1833f493d1f9'; else msgReceipt"
+                  *ngIf="message.userId !== user.id; else msgReceipt"
                 >
                   <div class="d-flex justify-content-start">
                     <p class="bg-light px-4 py-2 rounded text-dark">
