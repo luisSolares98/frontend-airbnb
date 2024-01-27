@@ -2,7 +2,10 @@ import { Categorie } from "./categorie";
 
 export interface Property {
     id: string;
-    title: string;
+    name: string;
     description: string;
-    categories: Categorie[];
+    amount: number;
+    state: string;
+    userId: string;
+    characteristics: Categorie[];
 }
