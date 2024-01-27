@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Property } from 'src/app/models/property';
 import { User } from 'src/app/models/user';
+import { ChatService } from 'src/app/services/chat.service';
 import { PublicationService } from 'src/app/services/publication.service';
 import { ReserveService } from 'src/app/services/reserve.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { UnsplashService } from 'src/app/unsplash.service';
+import { UnsplashService } from 'src/app/services/unsplash.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
   constructor(private storage: StorageService,
               private sPublication: PublicationService,
               private sReserve: ReserveService,
-              private unsplashService: UnsplashService) {
+              private unsplashService: UnsplashService,
+              private sChat: ChatService) {
     this.user = this.storage.getItem('user');
   }
 
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit {
     this.sPublication.getAll().subscribe(response => {
       if(!response) {
         alert('error')
+        return;
       }
       this.generateRandomImage(response.length);
       this.listProperties = response;
@@ -75,6 +78,15 @@ export class HomeComponent implements OnInit {
       if(resp.reserveID) {
         this.changeListPubli();
       }
-    })
+    });
+
+    const objChat = {
+        guestId: this.user?.id,
+        hostId: property.userId,
+        name: property.name
+    }
+    this.sChat.insertChat(objChat).subscribe(response => {
+      console.log(response);
+    });
   }
 }
