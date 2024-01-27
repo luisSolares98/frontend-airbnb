@@ -6,15 +6,9 @@
         <div class="container">
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col" *ngFor="let item of listProperties">
+                <div class="col" *ngFor="let item of listProperties; let i = index">
                     <div class="card shadow-sm" *ngIf="item.state == 'Active'">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                            preserveAspectRatio="xMidYMid slice" focusable="false">
-                            <title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
-                                dy=".3em">Thumbnail</text>
-                        </svg>
+                      <img height="280px" [src]="houseImageUrl[i]?.urls.regular" alt="Imagen de la propiedad">
                         <div class="card-body">
                             <h4>{{item.name}}</h4>
                             <p class="card-text">{{item.description}}</p>

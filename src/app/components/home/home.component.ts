@@ -4,6 +4,7 @@ import { User } from 'src/app/models/user';
 import { PublicationService } from 'src/app/services/publication.service';
 import { ReserveService } from 'src/app/services/reserve.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UnsplashService } from 'src/app/unsplash.service';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +16,12 @@ export class HomeComponent implements OnInit {
   listProperties?: Property[];
   selectProperty?: Property;
   user?: User;
+  houseImageUrl: any = '';
 
-  constructor(private storage: StorageService, 
+  constructor(private storage: StorageService,
               private sPublication: PublicationService,
-              private sReserve: ReserveService) {
+              private sReserve: ReserveService,
+              private unsplashService: UnsplashService) {
     this.user = this.storage.getItem('user');
   }
 
@@ -31,10 +34,23 @@ export class HomeComponent implements OnInit {
       if(!response) {
         alert('error')
       }
+      this.generateRandomImage(response.length);
       this.listProperties = response;
+
     }, error => {
-      
+
     });
+  }
+
+  generateRandomImage(cantidadImg: number) {
+    this.unsplashService.getRandomHouseImage(cantidadImg).subscribe(
+      (data: any) => {
+        this.houseImageUrl = data;
+      },
+      error => {
+        console.error(`Error: ${error.message}`);
+      }
+    );
   }
 
   onSelect(property: Property) {
