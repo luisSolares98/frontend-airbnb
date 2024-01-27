@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ItemComponent } from './components/item/item.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ListChatComponent } from './chat/list-chat/list-chat.component';
+import { ReserveComponent } from './components/reserve/reserve.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ListChatComponent } from './chat/list-chat/list-chat.component';
     HomeComponent,
     ItemComponent,
     HeaderComponent,
-    ListChatComponent
+    ListChatComponent,
+    ReserveComponent
   ],
   imports: [
     BrowserModule,
