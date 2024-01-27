@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Property } from 'src/app/models/property';
+import { PublicationService } from 'src/app/services/publication.service';
 
 @Component({
   selector: 'app-item',
@@ -10,7 +11,8 @@ export class ItemComponent {
   @Input()
   property?: Property ;
 
-  constructor() {
+  constructor(private sPublication: PublicationService) {
+    
   }
 
 }

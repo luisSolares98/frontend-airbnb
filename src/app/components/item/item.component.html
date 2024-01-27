@@ -8,7 +8,16 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label=" "></button>
         </div>
         <div class="modal-body">
-          {{property?.name}}
+          {{property?.description}}
+
+          <div class="mt-3" *ngIf="property?.characteristics">
+            <h5>Caracteristicas</h5>
+            <ul class="list-group list-group-flush" *ngFor="let item of property?.characteristics">
+              <li class="list-group-item">{{item.name}}</li>
+            </ul>
+
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
