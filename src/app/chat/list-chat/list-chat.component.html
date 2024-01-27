@@ -1,23 +1,51 @@
 <app-header></app-header>
 <main>
-  <div class="container mt-5" *ngIf="!loading && dataJson">
+  <div class="container mt-5">
     <div class="row">
       <!-- Lista de chats -->
       <div class="col-md-4">
-        <div class="card">
+        <div class="card mb-2">
           <div class="card-header bg-primary text-white">
-            Chats
+            Chats Anfitrion
           </div>
-          <ul class="list-group list-group-flush" id="chat-list">
+          <ul class="list-group list-group-flush" id="chat-list" *ngIf="!loadingHost">
             <ul class="list-group">
+              <li *ngIf="chatsHost.length === 0" class="list-group-item d-flex justify-content-between align-items-center">
+                No hay chats disponibles
+              </li>
               <li
-                *ngFor="let data of dataJson"
+                *ngFor="let data of chatsHost"
                 class="list-group-item d-flex justify-content-between align-items-center"
               >
                 <a href="/chat/{{data.uuid}}">{{ data.name }}</a>
               </li>
             </ul>
           </ul>
+          <div class="d-flex justify-content-center p-2" *ngIf="loadingHost">
+            Cargando...
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-dark text-white">
+            Chats Huesped
+          </div>
+          <ul class="list-group list-group-flush" id="chat-list" *ngIf="!loadingGuest">
+            <ul class="list-group">
+              <li *ngIf="chatsGuest.length === 0" class="list-group-item d-flex justify-content-between align-items-center">
+                No hay chats disponibles
+              </li>
+              <li
+                *ngFor="let data of chatsGuest"
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <a href="/chat/{{data.uuid}}">{{ data.name }}</a>
+              </li>
+            </ul>
+          </ul>
+          <div class="d-flex justify-content-center p-2" *ngIf="loadingGuest">
+            Cargando...
+          </div>
         </div>
       </div>
 
@@ -66,8 +94,8 @@
       </div>
     </div>
   </div>
-  <div class="text-center mt-5" *ngIf="loading">
+  <!-- <div class="text-center mt-5" *ngIf="loading">
     <div class="spinner-border text-primary" role="status"></div>
     <p class="mt-2">Cargando...</p>
-  </div>
+  </div> -->
 </main>

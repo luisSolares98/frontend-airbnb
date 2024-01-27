@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, from, interval, of, switchMap } from 'rxjs';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
   selector: 'app-list-chat',
@@ -10,23 +11,25 @@ import { Observable, Subscription, from, interval, of, switchMap } from 'rxjs';
   styleUrls: ['./list-chat.component.css'],
 })
 export class ListChatComponent implements OnInit {
-  messageForm: FormGroup;
-  dataJson: any;
+  chatsHost: any = [];
+  chatsGuest: any = [];
+  loadingHost: boolean = true;
+  loadingGuest: boolean = true;
   uuid: string = '';
-  messagesJson: any;
-  loading: boolean = true;
   userStorage: any = localStorage.getItem('user')
   user: any = JSON.parse(this.userStorage);
   private intervalSubscription: Subscription = new Subscription();
+  messageForm: FormGroup;
+  messagesJson: any;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute, private chatService: ChatService) {
     this.uuid = this.route.snapshot.paramMap.get('uuid') ?? '';
     if (this.uuid) {
-      this.getMessagesDigitalOceans();
+      this.getMessageByChatId();
 
       this.intervalSubscription = interval(3000)
       .pipe(
-        switchMap(() => from(this.getMessagesDigitalOceansRefresh()))
+        switchMap(() => from(this.chatService.getMessagesRefresh(this.uuid)))
       )
       .subscribe(async (data) => {
         if (data) {
@@ -42,36 +45,27 @@ export class ListChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getChatsDigitalOceans();
-  }
+    this.chatService.getChatsHost(this.user.id).subscribe((data: any) => {
+      this.chatsHost = data;
+      this.loadingHost = false;
+    })
 
-  getMessagesDigitalOceans() {
-    this.httpClient.get(`http://147.182.253.73:4000/message/${this.uuid}`)
-      .subscribe((data: any) => {
-        this.messagesJson = data;
-      });
+    this.chatService.getChatsGuest(this.user.id).subscribe((data: any) => {
+      this.chatsGuest = data;
+      this.loadingGuest = false;
+    })
   }
 
   ngOnDestroy(): void {
-    // Detiene el intervalo cuando el componente se destruye
     if (this.intervalSubscription) {
       this.intervalSubscription.unsubscribe();
     }
   }
 
-  getChatsDigitalOceans():any {
-    const {id} = JSON.parse(this.userStorage)
-    // http://147.182.253.73:4000/chat/host/${id}
-    this.httpClient.get(`http://147.182.253.73:4000/chats`).subscribe((data: any) => {
-      this.dataJson = data;
-      console.log(data)
-      this.loading = false;
+  getMessageByChatId() {
+    this.chatService.getMessages(this.uuid).subscribe((data) => {
+      this.messagesJson = data;
     });
-  }
-
-  getMessagesDigitalOceansRefresh(): any {
-    // Return an observable using 'of'
-    return this.httpClient.get(`http://147.182.253.73:4000/message/${this.uuid}`);
   }
 
   sendMessage() {
@@ -82,7 +76,7 @@ export class ListChatComponent implements OnInit {
 
       this.httpClient.post(url, dataForm).subscribe(
         (response) => {
-          this.getMessagesDigitalOceans();
+          this.getMessageByChatId();
           console.log('Respuesta del servidor:', response);
         },
         (error) => {
